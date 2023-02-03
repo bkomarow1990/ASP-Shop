@@ -1,5 +1,8 @@
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shop.Application.Options;
 using Shop.Infrastructure.Data;
+using Shop.Infrastructure.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +16,10 @@ builder.Services.AddDbContext<ShopDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("ShopDatabase"));
     }
 );
-
+builder.Services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.ConfigureIdentity();
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
+//CQRS Pattern + Mediator.
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

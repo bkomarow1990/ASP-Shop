@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Shop.Domain.Entities.Identity;
+using Shop.Domain.Entities.Identity.Token;
 
 namespace Shop.Infrastructure.Data
 {
@@ -11,5 +12,6 @@ namespace Shop.Infrastructure.Data
         {
             
         }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }

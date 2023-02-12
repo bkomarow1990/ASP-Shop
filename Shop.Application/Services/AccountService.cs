@@ -55,9 +55,9 @@ namespace Shop.Application.Services
             return new AuthenticateResponse(user, jwtToken, refreshToken.Token);
         }
 
-        public Task<AuthenticateResponse> RefreshToken(string token)
+        public async Task<AuthenticateResponse> RefreshToken(string token)
         {
-            var user = await _mediator.Send(new GetUserByJwtTokenQuery(token));//_context.Users.SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshTokens.Any(rt => rt.Token == token));
 
             // return null if no user found with token
             if (user == null) return null;
@@ -68,21 +68,58 @@ namespace Shop.Application.Services
             if (!refreshToken.IsActive) return null;
 
             // replace old refresh token with a new one and save
-            var newRefreshToken = GenerateRefreshToken(ipAddress);
+            var newRefreshToken = GenerateRefreshToken();
             refreshToken.Revoked = DateTime.UtcNow;
-            refreshToken.RevokedByIp = ipAddress;
             refreshToken.ReplacedByToken = newRefreshToken.Token;
             user.RefreshTokens.Add(newRefreshToken);
-            await _mediator.Send(new UpdateUserCommand(user));
+            await _userManager.UpdateAsync(user);
 
             // generate new jwt
             var jwtToken = GenerateJwtToken(user);
             return new AuthenticateResponse(user, jwtToken, newRefreshToken.Token);
         }
 
-        public Task Register(RegisterUserDTO registerUserDTO)
+        public async Task<bool> RevokeToken(string token)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshTokens.Any(rt => rt.Token == token));
+
+            // return false if no user found with token
+            if (user == null) return false;
+
+            var refreshToken = user.RefreshTokens.First(x => x.Token == token);
+
+            // return false if token is not active
+            if (!refreshToken.IsActive) return false;
+
+            // revoke token and save
+            refreshToken.Revoked = DateTime.UtcNow;
+            await _userManager.UpdateAsync(user);
+            return true;
+        }
+
+        public async Task Register(RegisterUserDTO registerUserDTO)
+        {
+            if (registerUserDTO == null)
+            {
+                throw new HttpException("Incorrect data for registration", HttpStatusCode.BadRequest);
+            }
+
+            var user = new ApplicationUser
+            {
+                Email = registerUserDTO.Email,
+                UserName = registerUserDTO.Email
+            };
+            var result = await _userManager.CreateAsync(user, registerUserDTO.Password);
+            if (!result.Succeeded)
+            {
+                StringBuilder messageBuilder = new StringBuilder();
+                foreach (var error in result.Errors)
+                {
+                    messageBuilder.AppendLine(error.Description);
+                }
+
+                throw new HttpException(messageBuilder.ToString(), HttpStatusCode.BadRequest);
+            }
         }
         // helper methods
 

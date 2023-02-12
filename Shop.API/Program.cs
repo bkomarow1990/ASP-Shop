@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shop.Application.Extensions;
 using Shop.Application.Options;
 using Shop.Infrastructure.Data;
 using Shop.Infrastructure.Helpers;
@@ -16,9 +17,12 @@ builder.Services.AddDbContext<ShopDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("ShopDatabase"));
     }
 );
+
 builder.Services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.ConfigureIdentity();
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
+builder.Services.AddCustomServices();
+builder.Services.AddAutoMapper();
 //CQRS Pattern + Mediator.
 var app = builder.Build();
 
@@ -28,7 +32,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.SeedDatabase();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

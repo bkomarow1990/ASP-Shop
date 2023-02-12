@@ -8,8 +8,10 @@ namespace Shop.Application.Options
 {
     public class JwtOptions
     {
-        public string Issuer { get; set; }
-        public string Key { get; set; }
-        public int LifeTime { get; set; }
+        public string ValidAudience { get; set; }
+        public string ValidIssuer { get; set; }
+        public string Secret { get; set; }
+        public int TokenValidityInMinutes { get; set; }
+        public double RefreshTokenValidityInDays { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Shop.Infrastructure.Data;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    partial class ShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230212202816_ProductAndOthersEntities")]
+    partial class ProductAndOthersEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,7 +137,7 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateEdit")
+                    b.Property<DateTime>("DateEdit")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -148,7 +151,7 @@ namespace Shop.Infrastructure.Migrations
 
                     b.HasIndex("ParentCategoryId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("Shop.Domain.Entities.Identity.ApplicationRole", b =>
@@ -254,7 +257,7 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateEdit")
+                    b.Property<DateTime>("DateEdit")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Expires")
@@ -291,7 +294,7 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateEdit")
+                    b.Property<DateTime>("DateEdit")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("OrderDate")
@@ -301,7 +304,7 @@ namespace Shop.Infrastructure.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("Shop.Domain.Entities.OrderItem", b =>
@@ -313,7 +316,7 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateEdit")
+                    b.Property<DateTime>("DateEdit")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("OrderId")
@@ -331,7 +334,7 @@ namespace Shop.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("Shop.Domain.Entities.Product", b =>
@@ -346,7 +349,7 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateEdit")
+                    b.Property<DateTime>("DateEdit")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -366,7 +369,7 @@ namespace Shop.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

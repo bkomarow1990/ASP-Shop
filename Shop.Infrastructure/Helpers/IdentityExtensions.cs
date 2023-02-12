@@ -20,8 +20,9 @@ namespace Shop.Infrastructure.Helpers
                 option.Password.RequireNonAlphanumeric = false;
                 option.Password.RequireUppercase = true;
                 option.Password.RequireLowercase = false;
-                option.User.AllowedUserNameCharacters =
-                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._";
+                option.User.RequireUniqueEmail = true;
+                //option.User.AllowedUserNameCharacters =
+                //    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._";
                 option.User.RequireUniqueEmail = true;
 
 

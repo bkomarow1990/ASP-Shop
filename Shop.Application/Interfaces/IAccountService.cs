@@ -11,6 +11,7 @@ namespace Shop.Application.Interfaces
     {
         Task<AuthenticateResponse> Authenticate(AuthenticateRequest model);
         Task<AuthenticateResponse> RefreshToken(string token);
+        Task<bool> RevokeToken(string token);
         Task Register(RegisterUserDTO registerUserDTO);
     }
 }

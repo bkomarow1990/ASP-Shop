@@ -6,13 +6,13 @@ namespace Shop.Domain.Common
     {
         Guid Id { get; set; }
         DateTime DateCreated { get; set; }
-        DateTime DateEdit { get; set; }
+        DateTime? DateEdit { get; set; }
     }
     public class BaseEntity : IEntity
     {
         [Key]
         public Guid Id { get; set; }
         public DateTime DateCreated { get; set; }
-        public DateTime DateEdit { get; set; }
+        public DateTime? DateEdit { get; set; }
     }
 }

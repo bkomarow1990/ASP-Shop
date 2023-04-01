@@ -1,0 +1,26 @@
+[
+    {
+        "Id" : "392b3112-751b-4345-b4d7-d5a24d46dc19",
+        "Name" : "Attributes"
+    },
+    {
+        "Id": "ce00721c-db00-4cfc-b611-edb11d437894",
+        "Name": "Flags",
+        "ParentCategoryId" : "392b3112-751b-4345-b4d7-d5a24d46dc19"
+    },
+    {
+        "Id" : "8bafa6da-0516-4e3a-b839-5a89098dff48",
+        "Name": "Symbolics",
+        "ParentCategoryId" : "392b3112-751b-4345-b4d7-d5a24d46dc19"
+    },
+    {
+        "Id" : "f13b4505-d361-46e1-a915-0e9b6d25aa1c",
+        "Name": "Post stamps",
+        "ParentCategoryId" : "392b3112-751b-4345-b4d7-d5a24d46dc19"
+    },
+    {
+        "Id" : "a701c49d-ee5b-45d7-a922-3395f0c073ee",
+        "Name": "Others",
+        "ParentCategoryId" : "392b3112-751b-4345-b4d7-d5a24d46dc19"
+    }
+]

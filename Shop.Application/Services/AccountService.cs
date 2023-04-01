@@ -46,12 +46,19 @@ namespace Shop.Application.Services
             }
 
             // authentication successful so generate jwt and refresh tokens
-            var jwtToken = GenerateJwtToken(user);
-            var refreshToken = GenerateRefreshToken();
-
+            var jwtToken = await GenerateJwtToken(user);
+            var refreshToken = new RefreshToken
+            {
+                DateCreated = DateTime.UtcNow,
+                Token = await GenerateRefreshToken(),
+                Expires = DateTime.Now.AddHours(72),
+                Revoked = null,
+                ReplacedByToken = null,
+                UserId = user.Id
+            };
             // save refresh token
             user.RefreshTokens.Add(refreshToken);
-            //await _mediator.Send(new UpdateUserCommand(user));
+            await _userManager.UpdateAsync(user);
             return new AuthenticateResponse(user, jwtToken, refreshToken.Token);
         }
 
@@ -68,15 +75,23 @@ namespace Shop.Application.Services
             if (!refreshToken.IsActive) return null;
 
             // replace old refresh token with a new one and save
-            var newRefreshToken = GenerateRefreshToken();
+            var newRefreshToken = await GenerateRefreshToken();
             refreshToken.Revoked = DateTime.UtcNow;
-            refreshToken.ReplacedByToken = newRefreshToken.Token;
-            user.RefreshTokens.Add(newRefreshToken);
+            refreshToken.ReplacedByToken = newRefreshToken;
+            RefreshToken refreshTokenEntity = new RefreshToken()
+            {
+                DateCreated = DateTime.UtcNow,
+                DateEdited = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddHours(72),
+                UserId = user.Id,
+                Token = newRefreshToken,
+            };
+            user.RefreshTokens.Add(refreshTokenEntity);
             await _userManager.UpdateAsync(user);
 
             // generate new jwt
-            var jwtToken = GenerateJwtToken(user);
-            return new AuthenticateResponse(user, jwtToken, newRefreshToken.Token);
+            var jwtToken = await GenerateJwtToken(user);
+            return new AuthenticateResponse(user, jwtToken, newRefreshToken);
         }
 
         public async Task<bool> RevokeToken(string token)
@@ -123,36 +138,48 @@ namespace Shop.Application.Services
         }
         // helper methods
 
-        private string GenerateJwtToken(ApplicationUser user)
+        private async Task<string> GenerateJwtToken(ApplicationUser user)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Value.Key));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var claims = new List<Claim>
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Value.Secret));
+            var roles = await _userManager.GetRolesAsync(user);
+            var authClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.UserName),
+
             };
+            foreach (var role in roles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
+            //new Claim(ClaimTypes.Role, )
             var token = new JwtSecurityToken(
-                issuer: _jwtOptions.Value.Issuer,
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(_jwtOptions.Value.LifeTime),
-                signingCredentials: credentials);
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                issuer: _jwtOptions.Value.ValidIssuer,
+                audience: _jwtOptions.Value.ValidAudience,
+                expires: DateTime.Now.AddMinutes(_jwtOptions.Value.TokenValidityInMinutes),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
+
+            return await Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
         }
 
-        private RefreshToken GenerateRefreshToken()
+        private async Task<string> GenerateRefreshToken()
         {
-            using (var rngCryptoServiceProvider = new RNGCryptoServiceProvider())
-            {
-                var randomBytes = new byte[64];
-                rngCryptoServiceProvider.GetBytes(randomBytes);
-                return new RefreshToken
-                {
-                    Token = Convert.ToBase64String(randomBytes),
-                    Expires = DateTime.UtcNow.AddDays(7),
-                    DateCreated = DateTime.UtcNow,
-                };
-            }
+            var randomNumber = new byte[64];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return await Task.FromResult(Convert.ToBase64String(randomNumber));
+            //using (var rngCryptoServiceProvider = new RNGCryptoServiceProvider())
+            //{
+            //    var randomBytes = new byte[64];
+            //    rngCryptoServiceProvider.GetBytes(randomBytes);
+            //    return new RefreshToken
+            //    {
+            //        Token = Convert.ToBase64String(randomBytes),
+            //        Expires = DateTime.UtcNow.AddDays(7),
+            //        DateCreated = DateTime.UtcNow,
+            //    };
+            //}
         }
     }
 }

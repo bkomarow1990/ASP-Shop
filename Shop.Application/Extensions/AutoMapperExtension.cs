@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using Shop.Application.DTO.Category;
+using Shop.Application.DTO.Product;
 using Shop.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace Shop.Application.Extensions
             var configures = new MapperConfiguration(mc =>
             {
                 mc.CreateMap<Category, CategoryDto>().ReverseMap();
+                mc.CreateMap<Product, AddProductDto>().ReverseMap();
+                mc.CreateMap<Product, ResponseProductDto>();
             });
             IMapper mapper = configures.CreateMapper();
             services.AddSingleton(mapper);

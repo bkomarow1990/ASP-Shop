@@ -12,8 +12,8 @@ using Shop.Infrastructure.Data;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20230212211314_Fixes")]
-    partial class Fixes
+    [Migration("20230331224353_ProductImage")]
+    partial class ProductImage
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -137,7 +137,7 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateEdit")
+                    b.Property<DateTime?>("DateEdited")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -152,6 +152,42 @@ namespace Shop.Infrastructure.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19"),
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Attributes"
+                        },
+                        new
+                        {
+                            Id = new Guid("ce00721c-db00-4cfc-b611-edb11d437894"),
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Flags",
+                            ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
+                        },
+                        new
+                        {
+                            Id = new Guid("8bafa6da-0516-4e3a-b839-5a89098dff48"),
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Symbolics",
+                            ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
+                        },
+                        new
+                        {
+                            Id = new Guid("f13b4505-d361-46e1-a915-0e9b6d25aa1c"),
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Post stamps",
+                            ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
+                        },
+                        new
+                        {
+                            Id = new Guid("a701c49d-ee5b-45d7-a922-3395f0c073ee"),
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Others",
+                            ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
+                        });
                 });
 
             modelBuilder.Entity("Shop.Domain.Entities.Identity.ApplicationRole", b =>
@@ -257,7 +293,7 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateEdit")
+                    b.Property<DateTime?>("DateEdited")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Expires")
@@ -294,7 +330,7 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateEdit")
+                    b.Property<DateTime?>("DateEdited")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("OrderDate")
@@ -309,28 +345,25 @@ namespace Shop.Infrastructure.Migrations
 
             modelBuilder.Entity("Shop.Domain.Entities.OrderItem", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateEdit")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateEdited")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
+                    b.HasKey("OrderId", "ProductId");
 
                     b.HasIndex("ProductId");
 
@@ -343,21 +376,25 @@ namespace Shop.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateEdit")
+                    b.Property<DateTime?>("DateEdited")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -365,9 +402,14 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<int>("StockQuantity")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Products");
                 });
@@ -459,13 +501,13 @@ namespace Shop.Infrastructure.Migrations
                     b.HasOne("Shop.Domain.Entities.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Shop.Domain.Entities.Product", "Product")
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -477,11 +519,17 @@ namespace Shop.Infrastructure.Migrations
                 {
                     b.HasOne("Shop.Domain.Entities.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Shop.Domain.Entities.Identity.ApplicationUser", "User")
+                        .WithMany("Products")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Shop.Domain.Entities.Category", b =>
@@ -494,6 +542,8 @@ namespace Shop.Infrastructure.Migrations
             modelBuilder.Entity("Shop.Domain.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Navigation("Orders");
+
+                    b.Navigation("Products");
 
                     b.Navigation("RefreshTokens");
                 });

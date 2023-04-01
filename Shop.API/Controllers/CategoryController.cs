@@ -23,6 +23,19 @@ namespace Shop.API.Controllers
             return Ok(await _categoryService.GetAllAsync());
         }
 
+        [HttpGet("get-all-categories-with-subcategories")]
+        public async Task<ActionResult<List<CategoryWithSubCategoriesDto>>> GetAllCategoriesWithSubCategories()
+        {
+            return Ok(await _categoryService.GetAllWithSubCategoriesAsync());
+        }
+
+        [HttpDelete("delete-category")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Delete(Guid categoryId)
+        {
+            await _categoryService.DeleteCategory(categoryId);
+            return Ok();
+        }
         [HttpPost("create-category")]
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<Guid?>> CreateCategory(AddCategoryDto categoryDto)

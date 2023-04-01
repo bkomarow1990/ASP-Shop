@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
-using Shop.Application.Common.Category.Commands;
+using Shop.Application.Common.Categories.Commands;
 using Shop.Infrastructure.Data;
 
-namespace Shop.Application.Common.Category.Handlers
+namespace Shop.Application.Common.Categories.Handlers
 {
     public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Guid?>
     {

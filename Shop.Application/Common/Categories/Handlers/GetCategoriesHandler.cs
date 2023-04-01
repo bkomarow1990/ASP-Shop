@@ -1,17 +1,12 @@
-﻿using MediatR;
-using Shop.Application.Common.Category.Queries;
-using Shop.Application.DTO.Category;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Shop.Infrastructure.Data;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
+using Shop.Application.Common.Categories.Queries;
+using Shop.Application.DTO.Category;
+using Shop.Infrastructure.Data;
 
-namespace Shop.Application.Common.Category.Handlers
+namespace Shop.Application.Common.Categories.Handlers
 {
     public class GetCategoriesHandler : IRequestHandler<GetCategoriesQuery, List<CategoryDto>>
     {

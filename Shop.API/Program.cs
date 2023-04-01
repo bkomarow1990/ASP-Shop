@@ -88,5 +88,5 @@ app.UseStaticFiles(
     }
 );
 app.MapControllers();
-
+app.UseDeveloperExceptionPage();
 app.Run();

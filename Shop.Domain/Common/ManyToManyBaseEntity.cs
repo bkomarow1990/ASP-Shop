@@ -1,17 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Shop.Domain.Common
 {
-    public interface IEntity
+    public interface IManyToManyBaseEntity
     {
-        Guid Id { get; set; }
         DateTime DateCreated { get; set; }
         DateTime? DateEdited { get; set; }
     }
-    public class BaseEntity : IEntity
+    public abstract class ManyToManyBaseEntity : IManyToManyBaseEntity
     {
-        [Key]
-        public Guid Id { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
         public DateTime? DateEdited { get; set; }
     }

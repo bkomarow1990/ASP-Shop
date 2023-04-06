@@ -59,17 +59,22 @@ namespace Shop.Application.Services
             // save refresh token
             user.RefreshTokens.Add(refreshToken);
             await _userManager.UpdateAsync(user);
+            //await _userManager.Save
             return new AuthenticateResponse(user, jwtToken, refreshToken.Token);
         }
 
         public async Task<AuthenticateResponse> RefreshToken(string token)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshTokens.Any(rt => rt.Token == token));
+            var user = await _userManager.Users.Include(u => u.RefreshTokens).FirstOrDefaultAsync(u => u.RefreshTokens.Any(rt => rt.Token == token));
 
             // return null if no user found with token
             if (user == null) return null;
 
-            var refreshToken = user.RefreshTokens.First(x => x.Token == token);
+            var refreshToken = user.RefreshTokens.FirstOrDefault(x => x.Token == token);
+            if (refreshToken is null)
+            {
+                throw new HttpException("Not found refresh token", HttpStatusCode.BadRequest);
+            }
 
             // return null if token is no longer active#
             if (!refreshToken.IsActive) return null;

@@ -22,6 +22,7 @@ namespace Shop.Domain.Entities
         public Guid UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        public virtual IList<Cart> Carts { get; set; } = new List<Cart>();
         //
     }
 }

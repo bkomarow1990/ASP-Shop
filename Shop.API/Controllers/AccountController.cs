@@ -28,19 +28,19 @@ namespace Shop.API.Controllers
         {
             var response = await _accountService.Authenticate(authenticateRequest);
             if (response == null) return BadRequest(new { message = "Username or password incorrect"});
-            SetTokenCookie(response.RefreshToken);
+            //SetTokenCookie(response.RefreshToken);
             return Ok(response);
         }
         [HttpPost("refresh-token")]
-        public async Task<ActionResult<AuthenticateResponse>> RefreshToken()
+        public async Task<ActionResult<AuthenticateResponse>> RefreshToken([FromBody] string refreshToken)
         {
-            var refreshToken = Request.Cookies["refreshToken"];
+            //var refreshToken = Request.Cookies["refreshToken"];
             var response = await _accountService.RefreshToken(refreshToken);
 
             if (response == null)
-                return Unauthorized(new { message = "Invalid token" });
+                return BadRequest(new { message = "Invalid token" });
 
-            SetTokenCookie(response.RefreshToken);
+            //SetTokenCookie(response.RefreshToken);
 
             return Ok(response);
         }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using Shop.Application.DTO.Cart;
 using Shop.Application.DTO.Category;
 using Shop.Application.DTO.Product;
 using Shop.Domain.Entities;
@@ -18,8 +19,11 @@ namespace Shop.Application.Extensions
             var configures = new MapperConfiguration(mc =>
             {
                 mc.CreateMap<Category, CategoryDto>().ReverseMap();
+
                 mc.CreateMap<Product, AddProductDto>().ReverseMap();
                 mc.CreateMap<Product, ResponseProductDto>();
+
+                mc.CreateMap<Cart, CartDto>();
             });
             IMapper mapper = configures.CreateMapper();
             services.AddSingleton(mapper);

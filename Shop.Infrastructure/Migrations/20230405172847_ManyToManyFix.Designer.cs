@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Shop.Infrastructure.Data;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    partial class ShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230405172847_ManyToManyFix")]
+    partial class ManyToManyFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,34 +181,34 @@ namespace Shop.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19"),
-                            DateCreated = new DateTime(2023, 4, 6, 17, 36, 10, 183, DateTimeKind.Local).AddTicks(9837),
+                            DateCreated = new DateTime(2023, 4, 5, 20, 28, 47, 170, DateTimeKind.Local).AddTicks(8895),
                             Name = "Attributes"
                         },
                         new
                         {
                             Id = new Guid("ce00721c-db00-4cfc-b611-edb11d437894"),
-                            DateCreated = new DateTime(2023, 4, 6, 17, 36, 10, 183, DateTimeKind.Local).AddTicks(9993),
+                            DateCreated = new DateTime(2023, 4, 5, 20, 28, 47, 170, DateTimeKind.Local).AddTicks(9050),
                             Name = "Flags",
                             ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
                         },
                         new
                         {
                             Id = new Guid("8bafa6da-0516-4e3a-b839-5a89098dff48"),
-                            DateCreated = new DateTime(2023, 4, 6, 17, 36, 10, 184, DateTimeKind.Local).AddTicks(34),
+                            DateCreated = new DateTime(2023, 4, 5, 20, 28, 47, 170, DateTimeKind.Local).AddTicks(9089),
                             Name = "Symbolics",
                             ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
                         },
                         new
                         {
                             Id = new Guid("f13b4505-d361-46e1-a915-0e9b6d25aa1c"),
-                            DateCreated = new DateTime(2023, 4, 6, 17, 36, 10, 184, DateTimeKind.Local).AddTicks(59),
+                            DateCreated = new DateTime(2023, 4, 5, 20, 28, 47, 170, DateTimeKind.Local).AddTicks(9112),
                             Name = "Post stamps",
                             ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
                         },
                         new
                         {
                             Id = new Guid("a701c49d-ee5b-45d7-a922-3395f0c073ee"),
-                            DateCreated = new DateTime(2023, 4, 6, 17, 36, 10, 184, DateTimeKind.Local).AddTicks(81),
+                            DateCreated = new DateTime(2023, 4, 5, 20, 28, 47, 170, DateTimeKind.Local).AddTicks(9134),
                             Name = "Others",
                             ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
                         });

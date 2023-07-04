@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Shop.Application.DTO.Category;
 
-namespace Shop.Application.Common.Categories.Queries
+namespace Shop.Application.Common.Products.Queries
 {
-    public record GetCategoriesQuery() : IRequest<List<CategoryDto>>;
+    public record GetCategoriesQuery(bool isOnlyWithParent) : IRequest<List<CategoryDto>>;
 }

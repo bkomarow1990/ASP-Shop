@@ -18,9 +18,15 @@ namespace Shop.API.Controllers
         }
 
         [HttpGet("get-all")]
-        public async Task<ActionResult<List<CategoryDto>>> GetAll()
+        public async Task<ActionResult<List<CategoryDto>>> GetAll(bool isOnlyWithParent)
         {
-            return Ok(await _categoryService.GetAllAsync());
+            return Ok(await _categoryService.GetAllAsync(isOnlyWithParent));
+        }
+
+        [HttpGet("get-category-with-sub-categories")]
+        public async Task<ActionResult<CategoryWithSubCategoriesDto>> GetCategoryWithSubCategories([FromQuery] Guid categoryId)
+        {
+            return Ok(await _categoryService.GetCategoryWithSubCategories(categoryId));
         }
 
         [HttpGet("get-all-categories-with-subcategories")]
@@ -41,6 +47,13 @@ namespace Shop.API.Controllers
         public async Task<ActionResult<Guid?>> CreateCategory(AddCategoryDto categoryDto)
         {
             return Ok(await _categoryService.CreateCategory(categoryDto));
+        }
+        [HttpPost("edit-category")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult> EditCategory(EditCategoryDto categoryDto)
+        {
+            await _categoryService.EditCategory(categoryDto);
+            return Ok();
         }
     }
 }

@@ -9,6 +9,6 @@ namespace Shop.Application.DTO.Category
     public class AddCategoryDto
     {
         public string Name { get; set; }
-        public Guid? ParentId { get; set; }
+        public Guid? ParentCategoryId { get; set; }
     }
 }

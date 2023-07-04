@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Shop.Application.DTO.Category;
 using MediatR;
-using Shop.Application.Common.Categories.Commands;
-using Shop.Application.Common.Categories.Queries;
+using Shop.Application.Common.Products.Commands;
+using Shop.Application.Common.Products.Queries;
 
 namespace Shop.Application.Services
 {
@@ -20,9 +20,19 @@ namespace Shop.Application.Services
             _mediator = mediator;
         }
 
-        public async Task<List<CategoryDto>> GetAllAsync()
+        public async Task<List<CategoryDto>> GetAllAsync(bool isOnlyWithParent)
         {
-            return await _mediator.Send(new GetCategoriesQuery());
+            return await _mediator.Send(new GetCategoriesQuery(isOnlyWithParent));
+        }
+
+        public async Task EditCategory(EditCategoryDto categoryDto)
+        {
+            await _mediator.Send(new EditCategoryCommand(categoryDto));
+        }
+
+        public async Task<CategoryWithSubCategoriesDto> GetCategoryWithSubCategories(Guid categoryId)
+        {
+            return await _mediator.Send(new GetCategoryWithSubCategoriesQuery(categoryId));
         }
 
         public async Task<List<CategoryWithSubCategoriesDto>> GetAllWithSubCategoriesAsync()

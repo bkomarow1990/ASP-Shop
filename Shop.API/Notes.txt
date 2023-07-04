@@ -1,0 +1,4 @@
+C:\Users\Admin\source\repos\CyrillShop\Shop.API\Shop.API.csproj
+
+//    "ShopDatabase": "workstation id=megashop.mssql.somee.com;packet size=4096;user id=petrodikiy_SQLLogin_1;pwd=ssxzffljx9;data source=megashop.mssql.somee.com;persist security info=False;initial catalog=megashop;TrustServerCertificate=True;"
+ Old Connection String

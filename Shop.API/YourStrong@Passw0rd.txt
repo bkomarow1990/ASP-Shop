@@ -1,0 +1,26 @@
+<YourStrong@Passw0rd>
+"<YourNewStrong@Passw0rd>"
+
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<YourStrong@Passw0rd>" -p 1433:1433 --name sql_server_container -d mcr.microsoft.com/mssql/server:2019-latest
+
+
+docker exec -it sql_server_container /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P <YourStrong@Passw0rd>
+CREATE DATABASE CyrillShop;
+
+sudo docker exec -it sql1 "bash"
+/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "<YourNewStrong@Passw0rd>"
+  /opt/mssql-tools/bin/sqlcmd -S localhost -U SA - робоче
+CREATE DATABASE CyrillShop;
+
+
+ASP.NET
+/etc/systemd/system/ create service
+/etc/systemd/system/
+api.cyril-market.store.service
+
+/// Ивдалив
+  include                         /etc/nginx/conf.d/*.conf;
+  include                         /etc/nginx/conf.d/domains/*.conf;
+
+  Limit
+

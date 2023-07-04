@@ -127,7 +127,8 @@ namespace Shop.Application.Services
             var user = new ApplicationUser
             {
                 Email = registerUserDTO.Email,
-                UserName = registerUserDTO.Email
+                UserName = registerUserDTO.Email,
+                RegistrationDate = DateTime.UtcNow,
             };
             var result = await _userManager.CreateAsync(user, registerUserDTO.Password);
             if (!result.Succeeded)

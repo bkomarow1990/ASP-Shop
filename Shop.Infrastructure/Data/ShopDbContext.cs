@@ -4,10 +4,11 @@ using Shop.Domain.Entities;
 using Shop.Domain.Entities.Identity;
 using Shop.Domain.Entities.Identity.Token;
 using System.Text.Json;
+using Microsoft.AspNetCore.Identity;
 
 namespace Shop.Infrastructure.Data
 {
-    public class ShopDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+    public class ShopDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, IdentityUserClaim<Guid>, ApplicationUserRole, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
     {
         public ShopDbContext(DbContextOptions options)
         : base(options)
@@ -16,6 +17,14 @@ namespace Shop.Infrastructure.Data
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            #region User
+
+            // builder.Entity<ApplicationUser>(u =>
+            // {
+            //     u.HasMany(ur => ur.UserRoles)
+            //         .WithOne(ur => ur.UserId)
+            // });
+            #endregion
             #region Category
             builder.Entity<Category>().HasData(
                 JsonSerializer.Deserialize<List<Category>>(File.ReadAllText("categoriesSeeder.json"))
@@ -33,17 +42,6 @@ namespace Shop.Infrastructure.Data
             #endregion
             #region OrderItem
 
-            builder.Entity<Cart>().HasKey(c => new { c.UserId, c.ProductId });
-            builder.Entity<Cart>()
-                .HasOne(c => c.User)
-                .WithMany(u => u.Carts)
-                .HasForeignKey(c => c.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-            builder.Entity<Cart>()
-                .HasOne(c => c.Product)
-                .WithMany(p => p.Carts)
-                .HasForeignKey(c => c.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
             builder.Entity<OrderItem>().HasKey(o => new { o.OrderId, o.ProductId});
             builder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)
@@ -59,7 +57,6 @@ namespace Shop.Infrastructure.Data
             base.OnModelCreating(builder);
         }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
-        public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }

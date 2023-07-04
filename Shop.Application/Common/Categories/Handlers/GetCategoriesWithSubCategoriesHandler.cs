@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shop.Application.Common.Categories.Queries;
 using Shop.Application.DTO.Category;
 using Shop.Infrastructure.Data;
 using System;
@@ -10,8 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Shop.Application.Common.Products.Queries;
 
-namespace Shop.Application.Common.Categories.Handlers
+namespace Shop.Application.Common.Products.Handlers
 {
     public class GetCategoriesWithSubCategoriesHandler : IRequestHandler<GetCategoriesWithSubCategoriesQuery, List<CategoryWithSubCategoriesDto>>
     {
@@ -26,7 +26,12 @@ namespace Shop.Application.Common.Categories.Handlers
 
         public async Task<List<CategoryWithSubCategoriesDto>> Handle(GetCategoriesWithSubCategoriesQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Categories.AsNoTracking().Include(c => c.Subcategories).Where(c => !c.ParentCategoryId.HasValue).ProjectTo<CategoryWithSubCategoriesDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+            return await _context.Categories
+                .AsNoTracking()
+                .Include(c => c.Subcategories)
+                .Where(c => !c.ParentCategoryId.HasValue)
+                .ProjectTo<CategoryWithSubCategoriesDto>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellationToken);
         }
     }
 }

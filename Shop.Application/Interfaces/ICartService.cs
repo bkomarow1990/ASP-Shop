@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Shop.Application.DTO.Product;
 
 namespace Shop.Application.Interfaces
 {
     public interface ICartService
     {
-        Task<List<CartDto>> GetCartAsync(Guid userId);
-        Task AddProductToCart(Guid productId, Guid userId, uint quantity);
-        Task UpdateCartProduct(Guid productId, Guid userId, uint quantity);
-        Task RemoveProductFromCart(Guid productId, Guid userId);
+        Task<List<ResponseProductDto>> GetCartAsync(Guid userId, List<Guid> productIds);
     }
 }

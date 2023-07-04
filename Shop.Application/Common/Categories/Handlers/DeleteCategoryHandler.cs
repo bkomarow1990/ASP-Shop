@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
-using Shop.Application.Common.Categories.Commands;
+using Shop.Application.Common.Products.Commands;
 using Shop.Domain.Entities;
 using Shop.Infrastructure.Data;
 
-namespace Shop.Application.Common.Categories.Handlers
+namespace Shop.Application.Common.Products.Handlers
 {
     public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, bool>
     {

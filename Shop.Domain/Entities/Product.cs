@@ -15,6 +15,7 @@ namespace Shop.Domain.Entities
         public string Name { get; set; }
         public string ImageName { get; set; }
         public string Description { get; set; }
+        public bool IsDeleted { get; set; } = false;
         public decimal Price { get; set; }
         public int StockQuantity { get; set; }
         public Guid? CategoryId { get; set; }
@@ -22,7 +23,6 @@ namespace Shop.Domain.Entities
         public Guid UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
-        public virtual IList<Cart> Carts { get; set; } = new List<Cart>();
         //
     }
 }

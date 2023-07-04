@@ -10,5 +10,5 @@ using Shop.Application.DTO.QueryTemplates;
 
 namespace Shop.Application.Common.Products.Queries
 {
-    public record GetProductsQuery(PageInfo PageInfo) : IRequest<IPagedList<ResponseProductDto>>;
+    public record GetProductsQuery(RequestProductsDto RequestInfo) : IRequest<IPagedList<ResponseProductDto>>;
 }

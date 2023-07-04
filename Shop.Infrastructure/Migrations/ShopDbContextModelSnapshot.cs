@@ -91,21 +91,6 @@ namespace Shop.Infrastructure.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -123,30 +108,6 @@ namespace Shop.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Shop.Domain.Entities.Cart", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateEdited")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("Quantity")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("UserId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("Shop.Domain.Entities.Category", b =>
@@ -178,34 +139,34 @@ namespace Shop.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19"),
-                            DateCreated = new DateTime(2023, 4, 6, 17, 36, 10, 183, DateTimeKind.Local).AddTicks(9837),
+                            DateCreated = new DateTime(2023, 7, 4, 1, 49, 21, 612, DateTimeKind.Local).AddTicks(804),
                             Name = "Attributes"
                         },
                         new
                         {
                             Id = new Guid("ce00721c-db00-4cfc-b611-edb11d437894"),
-                            DateCreated = new DateTime(2023, 4, 6, 17, 36, 10, 183, DateTimeKind.Local).AddTicks(9993),
+                            DateCreated = new DateTime(2023, 7, 4, 1, 49, 21, 612, DateTimeKind.Local).AddTicks(953),
                             Name = "Flags",
                             ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
                         },
                         new
                         {
                             Id = new Guid("8bafa6da-0516-4e3a-b839-5a89098dff48"),
-                            DateCreated = new DateTime(2023, 4, 6, 17, 36, 10, 184, DateTimeKind.Local).AddTicks(34),
+                            DateCreated = new DateTime(2023, 7, 4, 1, 49, 21, 612, DateTimeKind.Local).AddTicks(993),
                             Name = "Symbolics",
                             ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
                         },
                         new
                         {
                             Id = new Guid("f13b4505-d361-46e1-a915-0e9b6d25aa1c"),
-                            DateCreated = new DateTime(2023, 4, 6, 17, 36, 10, 184, DateTimeKind.Local).AddTicks(59),
+                            DateCreated = new DateTime(2023, 7, 4, 1, 49, 21, 612, DateTimeKind.Local).AddTicks(1015),
                             Name = "Post stamps",
                             ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
                         },
                         new
                         {
                             Id = new Guid("a701c49d-ee5b-45d7-a922-3395f0c073ee"),
-                            DateCreated = new DateTime(2023, 4, 6, 17, 36, 10, 184, DateTimeKind.Local).AddTicks(81),
+                            DateCreated = new DateTime(2023, 7, 4, 1, 49, 21, 612, DateTimeKind.Local).AddTicks(1038),
                             Name = "Others",
                             ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
                         });
@@ -282,6 +243,9 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -303,6 +267,31 @@ namespace Shop.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Shop.Domain.Entities.Identity.ApplicationUserRole", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("RoleId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("RoleId1");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Shop.Domain.Entities.Identity.Token.RefreshToken", b =>
@@ -412,6 +401,9 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -462,21 +454,6 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.HasOne("Shop.Domain.Entities.Identity.ApplicationRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Shop.Domain.Entities.Identity.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("Shop.Domain.Entities.Identity.ApplicationUser", null)
@@ -486,25 +463,6 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Shop.Domain.Entities.Cart", b =>
-                {
-                    b.HasOne("Shop.Domain.Entities.Product", "Product")
-                        .WithMany("Carts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Shop.Domain.Entities.Identity.ApplicationUser", "User")
-                        .WithMany("Carts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Shop.Domain.Entities.Category", b =>
                 {
                     b.HasOne("Shop.Domain.Entities.Category", "ParentCategory")
@@ -512,6 +470,33 @@ namespace Shop.Infrastructure.Migrations
                         .HasForeignKey("ParentCategoryId");
 
                     b.Navigation("ParentCategory");
+                });
+
+            modelBuilder.Entity("Shop.Domain.Entities.Identity.ApplicationUserRole", b =>
+                {
+                    b.HasOne("Shop.Domain.Entities.Identity.ApplicationRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shop.Domain.Entities.Identity.ApplicationRole", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId1");
+
+                    b.HasOne("Shop.Domain.Entities.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shop.Domain.Entities.Identity.ApplicationUser", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Shop.Domain.Entities.Identity.Token.RefreshToken", b =>
@@ -579,15 +564,20 @@ namespace Shop.Infrastructure.Migrations
                     b.Navigation("Subcategories");
                 });
 
+            modelBuilder.Entity("Shop.Domain.Entities.Identity.ApplicationRole", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
             modelBuilder.Entity("Shop.Domain.Entities.Identity.ApplicationUser", b =>
                 {
-                    b.Navigation("Carts");
-
                     b.Navigation("Orders");
 
                     b.Navigation("Products");
 
                     b.Navigation("RefreshTokens");
+
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("Shop.Domain.Entities.Order", b =>
@@ -597,8 +587,6 @@ namespace Shop.Infrastructure.Migrations
 
             modelBuilder.Entity("Shop.Domain.Entities.Product", b =>
                 {
-                    b.Navigation("Carts");
-
                     b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618

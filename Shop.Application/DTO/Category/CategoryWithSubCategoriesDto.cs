@@ -10,6 +10,7 @@ namespace Shop.Application.DTO.Category
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public CategoryDto ParentCategory { get; set; }
         public List<CategoryDto> Subcategories { get; set; }
     }
 }

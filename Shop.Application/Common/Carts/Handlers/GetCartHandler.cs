@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shop.Application.Common.Carts.Queries;
 using Shop.Application.DTO.Cart;
+using Shop.Application.DTO.Product;
 using Shop.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Shop.Application.Common.Carts.Handlers
 {
-    public class GetCartHandler : IRequestHandler<GetCartQuery, List<CartDto>>
+    public class GetCartHandler : IRequestHandler<GetCartQuery, List<ResponseProductDto>>
     {
         private readonly ShopDbContext _context;
         private readonly IMapper _mapper;
@@ -24,13 +25,12 @@ namespace Shop.Application.Common.Carts.Handlers
             _mapper = mapper;
         }
 
-        public async Task<List<CartDto>> Handle(GetCartQuery request, CancellationToken cancellationToken)
+        public async Task<List<ResponseProductDto>> Handle(GetCartQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Carts
+            return await _context.Products
                 .AsNoTracking()
-                .Include(c => c.Product)
-                .Where(c => c.UserId == request.UserId)
-                .ProjectTo<CartDto>(_mapper.ConfigurationProvider)
+                .Where(c => request.ProductIds.Contains(c.Id))
+                .ProjectTo<ResponseProductDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
         }
     }

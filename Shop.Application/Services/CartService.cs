@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using Shop.Application.Common.Carts.Queries;
-using Shop.Application.Common.Carts.Commands;
 using Shop.Application.DTO.Cart;
+using Shop.Application.DTO.Product;
 
 namespace Shop.Application.Services
 {
@@ -18,24 +18,9 @@ namespace Shop.Application.Services
         {
             _mediator = mediator;
         }
-        public async Task<List<CartDto>> GetCartAsync(Guid userId)
+        public async Task<List<ResponseProductDto>> GetCartAsync(Guid userId, List<Guid> productIds)
         {
-            return await _mediator.Send(new GetCartQuery(userId));
-        }
-
-        public async Task AddProductToCart(Guid productId, Guid userId, uint quantity)
-        {
-            await _mediator.Send(new AddProductToCartCommand(userId, productId, quantity));
-        }
-
-        public async Task UpdateCartProduct(Guid productId, Guid userId, uint quantity)
-        {
-            await _mediator.Send(new UpdateCartProductCommand(userId, productId, quantity));
-        }
-
-        public async Task RemoveProductFromCart(Guid productId, Guid userId)
-        {
-            await _mediator.Send(new RemoveProductFromCartCommand(userId, productId));
+            return await _mediator.Send(new GetCartQuery(userId, productIds));
         }
     }
 }

@@ -31,7 +31,6 @@ namespace Shop.Application.Common.Products.Handlers
         public async Task<IPagedList<ResponseProductDto>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
         {
             var query = _context.Products
-                .Where(p => !p.IsDeleted)
                 .Include(p => p.Category)
                 .AsNoTracking();
             var columnsFilter = new Dictionary<(string, bool), Expression<Func<Product, bool>>>

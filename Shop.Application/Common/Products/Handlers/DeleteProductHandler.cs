@@ -4,12 +4,9 @@ using Shop.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using Shop.Application.Common.Products.Commands;
 using Shop.Application.Exceptions;
 using Shop.Domain.Entities;
@@ -21,13 +18,11 @@ namespace Shop.Application.Common.Products.Handlers
     {
         private readonly ShopDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IWebHostEnvironment _env;
 
-        public DeleteProductHandler(ShopDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment env)
+        public DeleteProductHandler(ShopDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _env = env;
         }
 
         public async Task<bool> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
@@ -44,28 +39,9 @@ namespace Shop.Application.Common.Products.Handlers
             //.AsNoTracking()
             if ((await _userManager.IsInRoleAsync(user, "Administrator")) || product.UserId == request.UserId)
             {
-                _context.Products.Attach(product);
-                //_context.Products.Remove(product);
-                product.IsDeleted = true;
+                //_context.Products.Attach(product);
+                _context.Products.Remove(product);
                 await _context.SaveChangesAsync(cancellationToken);
-                if (!string.IsNullOrEmpty(product.ImageName))
-                {
-                    var filePath = Path.Combine(!_env.IsDevelopment() ? 
-                        Path.Combine(_env.ContentRootPath, "Images", "Products")
-                        : Path.Combine(_env.ContentRootPath, _env.ApplicationName, "Images", "Products"), product.ImageName);
-                    if (File.Exists(filePath))
-                    {
-                        try
-                        {
-                            File.Delete(filePath);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new HttpException("Unable to delete product image",
-                                HttpStatusCode.InternalServerError);
-                        }
-                    }
-                }
             }
             else
             {

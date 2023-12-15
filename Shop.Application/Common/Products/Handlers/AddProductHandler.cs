@@ -3,7 +3,6 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
 using Shop.Application.Common.Products.Commands;
 using Shop.Domain.Entities;
 using Shop.Infrastructure.Data;
@@ -25,18 +24,7 @@ namespace Shop.Application.Common.Products.Handlers
 
         public async Task<Guid> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
-            //Path.GetDirectoryName()
-            //var root = Path.Combine(_env.ContentRootPath, _env.ApplicationName, "Images", "Products");
-// #if DEBUG
-//             var assemblyPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-//             var assemblyDirectory = System.IO.Path.GetDirectoryName(assemblyPath);
-// #else
-//     var assemblyDirectory = System.AppContext.BaseDirectory;
-// #endif
-            //var root = Path.Combine(System.IO.Path.GetDirectoryName(), "Images", "Products");
-            string root = !_env.IsDevelopment() ? 
-                Path.Combine(_env.ContentRootPath, "Images", "Products")
-                : Path.Combine(_env.ContentRootPath, _env.ApplicationName, "Images", "Products") ;
+            var root = Path.Combine(Path.GetDirectoryName(_env.ContentRootPath), _env.ApplicationName, "Images", "Products");
             if (!Directory.Exists(root))
             {
                 Directory.CreateDirectory(root);

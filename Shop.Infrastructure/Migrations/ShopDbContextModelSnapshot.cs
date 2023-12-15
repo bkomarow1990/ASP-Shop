@@ -139,34 +139,34 @@ namespace Shop.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19"),
-                            DateCreated = new DateTime(2023, 7, 4, 1, 49, 21, 612, DateTimeKind.Local).AddTicks(804),
+                            DateCreated = new DateTime(2023, 7, 1, 3, 3, 10, 802, DateTimeKind.Local).AddTicks(2549),
                             Name = "Attributes"
                         },
                         new
                         {
                             Id = new Guid("ce00721c-db00-4cfc-b611-edb11d437894"),
-                            DateCreated = new DateTime(2023, 7, 4, 1, 49, 21, 612, DateTimeKind.Local).AddTicks(953),
+                            DateCreated = new DateTime(2023, 7, 1, 3, 3, 10, 802, DateTimeKind.Local).AddTicks(2703),
                             Name = "Flags",
                             ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
                         },
                         new
                         {
                             Id = new Guid("8bafa6da-0516-4e3a-b839-5a89098dff48"),
-                            DateCreated = new DateTime(2023, 7, 4, 1, 49, 21, 612, DateTimeKind.Local).AddTicks(993),
+                            DateCreated = new DateTime(2023, 7, 1, 3, 3, 10, 802, DateTimeKind.Local).AddTicks(2742),
                             Name = "Symbolics",
                             ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
                         },
                         new
                         {
                             Id = new Guid("f13b4505-d361-46e1-a915-0e9b6d25aa1c"),
-                            DateCreated = new DateTime(2023, 7, 4, 1, 49, 21, 612, DateTimeKind.Local).AddTicks(1015),
+                            DateCreated = new DateTime(2023, 7, 1, 3, 3, 10, 802, DateTimeKind.Local).AddTicks(2763),
                             Name = "Post stamps",
                             ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
                         },
                         new
                         {
                             Id = new Guid("a701c49d-ee5b-45d7-a922-3395f0c073ee"),
-                            DateCreated = new DateTime(2023, 7, 4, 1, 49, 21, 612, DateTimeKind.Local).AddTicks(1038),
+                            DateCreated = new DateTime(2023, 7, 1, 3, 3, 10, 802, DateTimeKind.Local).AddTicks(2786),
                             Name = "Others",
                             ParentCategoryId = new Guid("392b3112-751b-4345-b4d7-d5a24d46dc19")
                         });
@@ -400,9 +400,6 @@ namespace Shop.Infrastructure.Migrations
 
                     b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

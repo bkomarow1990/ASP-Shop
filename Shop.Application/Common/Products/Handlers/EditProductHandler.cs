@@ -3,7 +3,6 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Hosting;
 using Shop.Application.Common.Products.Commands;
 using Shop.Application.Exceptions;
 using Shop.Domain.Entities.Identity;
@@ -42,11 +41,7 @@ public class EditProductHandler : IRequestHandler<EditProductCommand, bool>
         _mapper.Map(request.EditProductDto, product);
         if (request.EditProductDto.Image != null)
         {
-            //var root = Path.Combine(Path.GetDirectoryName(_env.ContentRootPath), _env.ApplicationName, "Images", "Products");
-            // var root = Path.Combine(_env.ContentRootPath, "Images", "Products");
-            string root = !_env.IsDevelopment() ? 
-                Path.Combine(_env.ContentRootPath, "Images", "Products")
-                : Path.Combine(_env.ContentRootPath, _env.ApplicationName, "Images", "Products") ;
+            var root = Path.Combine(Path.GetDirectoryName(_env.ContentRootPath), _env.ApplicationName, "Images", "Products");
             if (!Directory.Exists(root))
             {
                 Directory.CreateDirectory(root);
